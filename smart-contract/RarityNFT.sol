@@ -1,4 +1,3 @@
-
 /**
  * Rarity-Based NFT Smart Contract
  * ================================
@@ -90,6 +89,13 @@ contract RarityNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
 
     uint256 public constant MAX_SUPPLY = 10000;
     string public baseURI;
+
+    /**
+     * NOTE: Set baseURI to the METADATA CID directory, not the images CID.
+     * Example: baseURI = "ipfs://{METADATA_CID}/" so tokenURI returns
+     * ipfs://{METADATA_CID}/{tokenId}.json where each JSON has image pointing to
+     * ipfs://{IMAGES_CID}/{tokenId}.png
+     */
 
     // Events
     event NFTMinted(
