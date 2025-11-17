@@ -12,7 +12,7 @@ Each NFT will have a corresponding JSON metadata file following this structure:
 {
   "name": "NFT #1",
   "description": "Your collection description here",
-  "image": "ipfs://YOUR_IPFS_HASH/images/1.png",
+  "image": "ipfs://{IMAGES_CID}/1.png",
   "external_url": "https://yourwebsite.com/nft/1",
   "attributes": [
     {
@@ -137,7 +137,7 @@ T9: Maximal         (Score: 270)     - Ultra Rare    - 10 NFTs
 {
   "name": "Your NFT Collection Name",
   "description": "Your collection description",
-  "image": "ipfs://YOUR_IPFS_HASH/collection.png",
+  "image": "ipfs://{COLLECTION_IMAGE_CID}",
   "external_url": "https://yourwebsite.com",
   "total_supply": 10000,
   "tiers": [
@@ -164,7 +164,7 @@ T9: Maximal         (Score: 270)     - Ultra Rare    - 10 NFTs
 
 Metadata should be accessible at:
 ```
-https://ipfs.io/ipfs/YOUR_IPFS_HASH/metadata/{tokenId}.json
+https://ipfs.io/ipfs/{METADATA_CID}/metadata/{tokenId}.json
 ```
 
 Your smart contract should point to this base URI.
@@ -188,3 +188,54 @@ Your smart contract should point to this base URI.
 ---
 
 **Note**: Do NOT store metadata in /output/nfts-final/ until ready for IPFS upload. Keep the generation logic and configuration files separate from generated metadata.
+
+---
+
+# Metadata Template (Marketplace Compliant)
+
+Example single token metadata (Standard):
+```json
+{
+  "name": "Collection Name #1",
+  "description": "Collection description here",
+  "image": "ipfs://{IMAGES_CID}/1.png",
+  "external_url": "https://yourproject.com/nft/1",
+  "attributes": [
+    {"trait_type": "Socks", "value": "Socks_05"}
+  ]
+}
+```
+
+Extended (adds internal rarity details):
+```json
+{
+  "name": "Collection Name #1",
+  "description": "Collection description here",
+  "image": "ipfs://{IMAGES_CID}/1.png",
+  "attributes": [{"trait_type": "Socks", "value": "Socks_05"}],
+  "rarity_details": {
+    "total_score": 144,
+    "tier_id": "T5",
+    "tier_name": "Common"
+  }
+}
+```
+
+Collection metadata (optional off-chain reference):
+```json
+{
+  "name": "Collection Name",
+  "description": "Full collection description",
+  "image": "ipfs://{COLLECTION_IMAGE_CID}",
+  "total_supply": 10000
+}
+```
+
+Gateway access examples:
+```
+https://ipfs.io/ipfs/{METADATA_CID}/1.json
+ipfs://{METADATA_CID}/1.json
+```
+
+Remember: baseURI = ipfs://{METADATA_CID}/
+Image field in each token metadata points to ipfs://{IMAGES_CID}/tokenId.png

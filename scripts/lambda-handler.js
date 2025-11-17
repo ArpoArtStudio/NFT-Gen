@@ -60,7 +60,7 @@ async function generateNFTBatch(startId, endId) {
   const metadataGen = new MetadataGenerator(
     process.env.COLLECTION_NAME || 'NFT Collection',
     'A 10,000 piece collection with 9-tier rarity system',
-    process.env.IPFS_HASH || 'ipfs://YOUR_IPFS_HASH/images'
+    process.env.IPFS_HASH || 'ipfs://{IMAGES_CID}'
   );
 
   const batch = [];

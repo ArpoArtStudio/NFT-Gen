@@ -38,7 +38,7 @@ const inputDir = args.input || './output/nfts-final';
 const outputDir = args.output || './output/metadata';
 const collectionName = args.collection || 'NFT Collection';
 const collectionDescription = args.description || 'A 10,000 piece collection with 9-tier rarity system';
-const ipfsHash = args['ipfs-hash'] || 'ipfs://YOUR_IPFS_HASH/images';
+const ipfsHash = args['ipfs-hash'] || 'ipfs://{IMAGES_CID}';
 const format = args.format || 'standard';
 
 class MetadataProcessor {

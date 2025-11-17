@@ -33,7 +33,7 @@ async function main() {
   console.log(`\n🚀 AWS Generation started -> bucket: ${bucketName}`);
   const engine = new RarityEngine();
   engine.loadConfig(rarityConfig);
-  const metadataGen = new MetadataGenerator('NFT Collection', 'A 10,000 piece collection with 9-tier rarity system', 'ipfs://YOUR_IPFS_HASH/images');
+  const metadataGen = new MetadataGenerator('NFT Collection', 'A 10,000 piece collection with 9-tier rarity system', 'ipfs://{IMAGES_CID}/images');
 
   let generated = 0;
   let batchIndex = 0;

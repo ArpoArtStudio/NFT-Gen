@@ -5,7 +5,7 @@ class MetadataGenerator {
   constructor(collectionName, collectionDescription, ipfsImageBasePath = null) {
     this.collectionName = collectionName;
     this.collectionDescription = collectionDescription;
-    this.ipfsImageBasePath = ipfsImageBasePath || 'ipfs://YOUR_IPFS_HASH/images';
+    this.ipfsImageBasePath = ipfsImageBasePath || 'ipfs://{IMAGES_CID}';
     this.websiteBaseUrl = 'https://yourwebsite.com/nft';
   }
 

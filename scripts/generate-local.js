@@ -51,7 +51,7 @@ class LocalNFTGenerator {
     this.metadataGen = new MetadataGenerator(
       'NFT Collection',
       'A 10,000 piece collection with 9-tier rarity system',
-      'ipfs://YOUR_IPFS_HASH/images'
+      'ipfs://{IMAGES_CID}'
     );
     this.stats = {
       success: 0,
@@ -228,9 +228,9 @@ class LocalNFTGenerator {
       maxScore: this.stats.maxScore,
       tierDistribution: this.stats.tierDistribution,
       generatedAt: new Date().toISOString(),
-      ipfsImagePath: 'ipfs://YOUR_IPFS_HASH/images',
+      ipfsImagePath: 'ipfs://{IMAGES_CID}',
       instructions: [
-        'Replace YOUR_IPFS_HASH with actual IPFS hash after upload',
+        'Replace {IMAGES_CID} after uploading images',
         'Validate all 10000 metadata files are present',
         'Check tier distribution matches expected bell curve'
       ]
