@@ -1,5 +1,111 @@
 # 🎨 NFT Collection Generator - Tier System Edition
 
+## 🚀 Ultra Simple Launch Steps (Non-Technical)
+1. Make PNG images (156 total) and put them in `layers/<trait>/` folders.
+2. Run: `npm install`
+3. Make 10 test NFTs: `npm run test-generation`
+4. Make full metadata: `npm run generate:local` then `npm run generate:metadata`
+5. Upload to IPFS: `npm run upload:ipfs -- --token=YOUR_NFT_STORAGE_TOKEN`
+6. Copy the METADATA CID (NOT images CID) → use for contract baseURI.
+7. Deploy contract: `npm run deploy:sepolia`
+8. Done. View on OpenSea.
+
+## 🧩 What Each Script Does
+- `test-generation` → Makes 10 sample metadata JSON files.
+- `generate:local` → Makes raw generation JSON (full set if range given).
+- `generate:metadata` → Converts raw JSON into marketplace metadata.
+- `upload:ipfs` → Sends metadata + images folders to IPFS (nft.storage).
+  - Flags: `--skip-images` or `--skip-metadata` if you only want one.
+- `rewrite:metadata` → Replace image CID inside metadata after image upload.
+- `aws:setup` → Store AWS keys locally (.aws-config.json).
+- `aws:generate` → Generate metadata directly into your S3 bucket.
+- `download:aws` → Pull S3 metadata to local `output/metadata`.
+- `deploy:sepolia` / `deploy:ethereum` → Deploy smart contract.
+
+## 🔗 Correct BaseURI Logic
+Set baseURI to metadata directory CID:
+`ipfs://METADATA_CID/` (Contract will append `tokenId.json` automatically if you store full URIs; if not, ensure metadata files named `1.json`, `2.json`, etc.)
+Image field inside each metadata should use images CID:
+`"image": "ipfs://IMAGES_CID/1.png"`
+Use `rewrite:metadata` after images upload.
+
+## 🛠 Full Local Workflow (Images already prepared)
+```bash
+# 1. Install
+npm install
+
+# 2. Generate full raw set (IDs 1-10000)
+npm run generate:local
+
+# 3. Build clean metadata
+npm run generate:metadata
+
+# 4. Upload images folder first (if you have it)
+npm run upload:ipfs -- --token=YOUR_KEY --skip-metadata
+# Copy Images CID
+
+# 5. Inject Images CID into metadata
+node scripts/rewrite-metadata-images.mjs --cid=IMAGES_CID --dir=./output/metadata
+
+# 6. Upload metadata
+npm run upload:ipfs -- --token=YOUR_KEY --skip-images
+# Copy Metadata CID
+
+# 7. Deploy contract (uses metadata CID)
+npm run deploy:sepolia
+```
+
+## ☁️ AWS Workflow (Faster Generation)
+```bash
+npm run aws:setup            # Enter AWS keys + bucket name
+npm run aws:generate         # Writes metadata to S3 (metadata/1.json ...)
+npm run download:aws         # Pulls S3 metadata locally
+# Continue with IPFS upload steps above
+```
+
+## 🧪 Verify Before Deploy
+Checklist:
+- `output/metadata/1.json` exists and has image pointing to ipfs://IMAGES_CID/1.png
+- Metadata CID opens in browser: https://ipfs.io/ipfs/METADATA_CID/1.json
+- No placeholder text remains (search for YOUR_IPFS_HASH)
+- Contract baseURI set to `ipfs://METADATA_CID/`
+
+## 🔐 Environment Variables
+Create `.env` file:
+```
+NFT_STORAGE_TOKEN=YOUR_KEY_HERE
+```
+Then just run: `npm run upload:ipfs`
+
+## 🧬 Rarity System
+Still exactly:
+- 9 tiers (T1-T9) quotas preserved
+- Scores 42 → 270
+- Distribution bell curve enforced by engine
+
+## 📦 Output Folders
+- `output/nfts-final/` → raw generation JSON set
+- `output/metadata/` → final marketplace metadata (what you upload)
+- `output/images/` → place rendered PNGs here before IPFS upload
+
+## 🧾 Regenerating After Image CID Change
+If you re-upload images and CID changes:
+- Run `rewrite:metadata` again with new CID.
+- Re-upload metadata folder and update baseURI (only if contract not yet live).
+
+## ❗ Common Mistakes
+- Using images CID as baseURI (wrong). Must use metadata CID.
+- Forgetting to replace `YOUR_IPFS_HASH` placeholders before upload.
+- Uploading raw generation folder instead of finalized metadata.
+- Mixing up numbering (must start at 1 and be continuous).
+
+## 🆘 Help Commands
+Run: `npm run commands` to see all available scripts.
+
+## ✅ Ready
+You now have: generation + metadata + IPFS upload + contract deploy.
+Proceed to create images, generate, upload, deploy.
+
 ## 📋 Overview
 
 Your NFT collection generator is now **production-ready** with:

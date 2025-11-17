@@ -1,5 +1,31 @@
 # NFT Collection Generation - Cleanup & Production Setup
 
+## 🔑 BaseURI Clarification (IMPORTANT)
+Use the METADATA CID for contract baseURI:
+```
+baseURI = ipfs://METADATA_CID/
+```
+Each token URI resolves to `ipfs://METADATA_CID/1.json` etc.
+Images inside metadata must reference the IMAGES CID:
+```
+"image": "ipfs://IMAGES_CID/1.png"
+```
+If you upload images after metadata creation, run:
+```
+node scripts/rewrite-metadata-images.mjs --cid=NEW_IMAGES_CID --dir=./output/metadata
+```
+Then re-upload metadata if contract not yet deployed.
+
+## Updated Scripts Overview
+- `generate:local` → raw generation JSON (default output/nfts-final)
+- `generate:metadata` → finalized marketplace metadata (output/metadata)
+- `upload:ipfs` → upload folders to IPFS (supports --skip-images / --skip-metadata)
+- `rewrite:metadata` → swap image CID in metadata files
+- `aws:setup` / `aws:generate` / `download:aws` → AWS path
+- `deploy:sepolia` / `deploy:ethereum` → contract deploy
+
+---
+
 ## ✅ What Has Been Cleaned Up
 
 ### Removed Files & Metadata

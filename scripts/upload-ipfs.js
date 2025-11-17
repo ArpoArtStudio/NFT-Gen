@@ -25,6 +25,12 @@ async function getNftStorageClient(token) {
   return { NFTStorage, File, client: new NFTStorage({ token }) };
 }
 
+// Load environment variables from .env file if it exists
+const dotenvPath = path.join(process.cwd(), '.env');
+if (fs.existsSync(dotenvPath)) {
+  require('dotenv').config({ path: dotenvPath });
+}
+
 // Parse command-line arguments
 const parseArgs = () => {
   const args = {};
@@ -37,6 +43,8 @@ const parseArgs = () => {
 
 const args = parseArgs();
 const token = args.token || process.env.NFT_STORAGE_TOKEN;
+const skipMetadata = args['skip-metadata'] || false;
+const skipImages = args['skip-images'] || false;
 const metadataDir = args['metadata-dir'] || process.env.METADATA_DIR || './output/metadata';
 const imagesDir = args['images-dir'] || process.env.IMAGES_DIR || './output/images';
 
@@ -118,22 +126,28 @@ class IPFSUploader {
       this.validateConfig();
       const { NFTStorage, File, client } = await getNftStorageClient(this.token);
 
-      // Metadata
       let metadataCid = null;
-      if (fs.existsSync(metadataDir)) {
-        const metadataFiles = await this.dirToFilesArray(metadataDir, File);
-        metadataCid = await this.uploadDirectory(client, metadataFiles, 'metadata');
+      if (!skipMetadata) {
+        if (fs.existsSync(metadataDir)) {
+          const metadataFiles = await this.dirToFilesArray(metadataDir, File);
+          metadataCid = await this.uploadDirectory(client, metadataFiles, 'metadata');
+        } else {
+          console.log(`⚠️  Metadata directory not found: ${metadataDir}`);
+        }
       } else {
-        console.log(`⚠️  Metadata directory not found: ${metadataDir}`);
+        console.log('⏭️  Skipping metadata upload (--skip-metadata)');
       }
 
-      // Images
       let imagesCid = null;
-      if (fs.existsSync(imagesDir)) {
-        const imageFiles = await this.dirToFilesArray(imagesDir, File);
-        imagesCid = await this.uploadDirectory(client, imageFiles, 'image');
+      if (!skipImages) {
+        if (fs.existsSync(imagesDir)) {
+          const imageFiles = await this.dirToFilesArray(imagesDir, File);
+          imagesCid = await this.uploadDirectory(client, imageFiles, 'image');
+        } else {
+          console.log(`⚠️  Images directory not found: ${imagesDir}`);
+        }
       } else {
-        console.log(`⚠️  Images directory not found: ${imagesDir}`);
+        console.log('⏭️  Skipping images upload (--skip-images)');
       }
 
       this.generateReport(metadataCid, imagesCid);
