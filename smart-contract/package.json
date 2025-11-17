@@ -1,0 +1,43 @@
+{
+  "name": "rarity-nft",
+  "version": "1.0.0",
+  "description": "ERC-721 Smart Contract for Rarity NFT Collection with Multi-Network Deployment",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile",
+    "deploy-sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "deploy-ethereum": "hardhat run scripts/deploy.js --network ethereum",
+    "deploy-polygon": "hardhat run scripts/deploy.js --network polygon",
+    "deploy-polygon-mumbai": "hardhat run scripts/deploy.js --network mumbai",
+    "deploy-arbitrum": "hardhat run scripts/deploy.js --network arbitrum",
+    "deploy-arbitrum-goerli": "hardhat run scripts/deploy.js --network arbitrumGoerli",
+    "verify": "hardhat verify",
+    "clean": "hardhat clean"
+  },
+  "keywords": [
+    "nft",
+    "erc721",
+    "ethereum",
+    "polygon",
+    "arbitrum",
+    "web3",
+    "blockchain",
+    "rarity"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "@openzeppelin/contracts": "^4.9.3",
+    "@openzeppelin/hardhat-upgrades": "^2.0.0",
+    "hardhat": "^2.17.0",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solidity-coverage": "^0.8.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "ethers": "^6.9.0"
+  }
+}
